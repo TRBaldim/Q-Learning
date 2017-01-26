@@ -18,4 +18,4 @@ class Cheese(Objects):
             self.destroy()
             return True
         else:
-            False
+            return False

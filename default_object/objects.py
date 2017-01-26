@@ -70,18 +70,13 @@ class Objects:
             obj.parent_stack(self)
 
     def pop_stack(self, obj):
-        print self.stack_object
         self.parent.stack_object.remove(obj)
-        print self.stack_object
 
     def destroy(self):
         self.pop_stack(self)
 
     def interact(self, obj):
-        if obj in self.stack_object:
-            return False
-        else:
+        if obj not in self.stack_object:
             return True
-
-
-
+        else:
+            return False
