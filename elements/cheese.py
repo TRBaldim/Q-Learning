@@ -1,4 +1,5 @@
 from default_object import Objects
+from mouse import Mouse
 
 class Cheese(Objects):
 
@@ -12,3 +13,9 @@ class Cheese(Objects):
         return 'Q'
 
     def interact(self, obj):
+        if isinstance(obj, Mouse):
+            obj.interact(self)
+            self.destroy()
+            return True
+        else:
+            False

@@ -65,9 +65,17 @@ class Objects:
         self.parent = parent_obj
 
     def put_stack(self, obj):
-        if isinstance(obj, Objects) and self.interact(obj):
+        if isinstance(obj, Objects) and self.stack_object[0].interact(obj):
             self.stack_object = insert_sorted(obj, self.stack_object)
             obj.parent_stack(self)
+
+    def pop_stack(self, obj):
+        print self.stack_object
+        self.parent.stack_object.remove(obj)
+        print self.stack_object
+
+    def destroy(self):
+        self.pop_stack(self)
 
     def interact(self, obj):
         if obj in self.stack_object:

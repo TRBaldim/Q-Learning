@@ -1,10 +1,11 @@
 from default_object import Objects
 
+
 class Map:
     def __init__(self, x, y):
         self.map_image = []
         for i in range(y):
-            self.map_image.append([Objects() for i in range(x)])
+            self.map_image.append([Objects() for _ in range(x)])
 
     def __str__(self):
         return_str = ''
