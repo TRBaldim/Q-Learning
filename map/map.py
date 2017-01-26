@@ -16,4 +16,12 @@ class Map:
         return return_str
 
     def set_element(self, elem, x, y):
+        elem.set_position(x, y)
         self.map_image[y][x].put_stack(elem)
+    # todo: Implement  the movement, and the possible movement in the map
+    def possible_move(self, x_orign, y_orgin, depth):
+        if depth != 0:
+            return [self.possible_move(x_orign + depth, y_orgin + depth, depth - 1),
+                    self.possible_move(x_orign + depth, y_orgin - depth, depth -1),
+                    self.possible_move(x_orign - depth, y_orgin + depth, depth - 1),
+                    self.possible_move(x_orign - depth, y_orgin - depth, depth - 1)]

@@ -8,6 +8,8 @@ class Objects:
         self.set_hierarchy()
         self.head = str(self)
         self.parent = None
+        self.position = None
+        self.depth = 0
 
     def __str__(self):
         if len(self.stack_object) == 1:
@@ -74,6 +76,12 @@ class Objects:
 
     def destroy(self):
         self.pop_stack(self)
+
+    def set_position(self, x, y):
+        self.position = (x, y, self.depth)
+
+    def set_depth(self):
+        self.depth = 0
 
     def interact(self, obj):
         if obj not in self.stack_object:

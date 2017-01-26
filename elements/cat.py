@@ -1,5 +1,5 @@
 from default_object import Objects
-
+from elements import *
 
 class Cat(Objects):
     def set_hierarchy(self):
@@ -12,4 +12,7 @@ class Cat(Objects):
         return 'C'
 
     def interact(self, obj):
-        return False
+        if isinstance(obj, Mouse):
+            return obj.interact(self)
+        else:
+            return False

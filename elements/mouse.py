@@ -13,6 +13,9 @@ class Mouse(Objects):
     def __repr__(self):
         return 'M'
 
+    def set_depth(self):
+        self.depth = 1
+
     def interact(self, obj):
         if isinstance(obj, Cat):
             obj.interact(self)
@@ -20,3 +23,4 @@ class Mouse(Objects):
             return True
         else:
             return False
+
