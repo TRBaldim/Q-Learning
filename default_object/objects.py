@@ -9,7 +9,8 @@ class Objects:
         self.head = str(self)
         self.parent = None
         self.position = None
-        self.depth = 0
+        self.depth = None
+        self.set_depth()
 
     def __str__(self):
         if len(self.stack_object) == 1:

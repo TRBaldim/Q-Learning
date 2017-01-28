@@ -1,5 +1,5 @@
 from default_object import Objects
-from mouse import Mouse
+from animals import Mouse
 
 class Cheese(Objects):
 

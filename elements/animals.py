@@ -1,5 +1,22 @@
 from default_object import Objects
-from cat import Cat
+
+
+class Cat(Objects):
+    def set_hierarchy(self):
+        self.hierarchy_level = 7
+
+    def __str__(self):
+        return 'C'
+
+    def __repr__(self):
+        return 'C'
+
+    def interact(self, obj):
+        if isinstance(obj, Mouse):
+            obj.destroy()
+            return True
+        else:
+            return False
 
 
 class Mouse(Objects):
@@ -19,8 +36,6 @@ class Mouse(Objects):
     def interact(self, obj):
         if isinstance(obj, Cat):
             obj.interact(self)
-            self.destroy()
             return True
         else:
             return False
-

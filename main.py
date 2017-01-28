@@ -12,10 +12,17 @@ m = Mouse()
 
 map.set_element(Wall(), 2, 3)
 map.set_element(Cheese(), 1, 3)
-map.set_element(m, 2, 1)
+map.set_element(m, 1, 3)
 map.set_element(Cheese(), 1, 3)
 map.set_element(Cat(), 0, 4)
-# todo: fix the possible move, the return is none. Should be debugged.
-print map.possible_move(*m.position)
+
+print map
+
+pos = map.possible_move(*m.position)
+print pos
+for i in pos:
+    print i
+    map.set_element(m, *i)
+    print map
 
 print map
