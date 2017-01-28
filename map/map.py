@@ -24,20 +24,40 @@ class Map:
     def remove_inconcistency(self, elem):
         x = elem[0]
         y = elem[1]
-        if x > self.x or x < 0:
+        if x >= self.x or x < 0:
             return False
-        elif y > self.y or y < 0:
+        elif y >= self.y or y < 0:
             return False
         else:
             return True
 
     @staticmethod
     def remove_from_list(l):
+        '''
+        Convert a List of Lists to a List of Objects
+        :param l: [[Any], [Any]]
+        :return: [Any, Any]
+        '''
         ret = []
         for i in l:
             if isinstance(i, list):
                 [ret.append(k) for k in i]
         return ret
+
+    def move_object(self, obj, dest_x, dest_y):
+        obj_x = obj.position[0]
+        obj_y = obj.position[1]
+
+        if obj not in self.map_image[obj_y][obj_x].stack_object:
+            return False
+
+        if self.map_image[dest_y][dest_x].stack_object[0].interact(obj):
+            if obj in self.map_image[obj_y][obj_x].stack_object:
+                self.map_image[obj_y][obj_x].stack_object[0].pop_stack(obj)
+                self.set_element(obj, dest_x, dest_y)
+                return True
+        else:
+            return False
 
     def possible_move(self, x_orign, y_orgin, depth):
         if depth != 0:

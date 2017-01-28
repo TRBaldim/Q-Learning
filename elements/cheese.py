@@ -1,6 +1,7 @@
 from default_object import Objects
 from animals import Mouse
 
+
 class Cheese(Objects):
 
     def set_hierarchy(self):
