@@ -1,6 +1,7 @@
 from map import Map
 from default_object import Objects
 from elements import Wall, Cheese, Mouse, Cat
+from reinforcement import directions
 
 import numpy as np
 
@@ -20,8 +21,9 @@ map.set_element(Cat(), 0, 4)
 
 print map
 
-for _ in range(10000):
+for _ in range(10):
     pos = map.possible_move(*m.position)
+    print directions((m.position[0], m.position[1]), pos)
     p = pos[np.random.randint(0, len(pos))]
     print p
     map.move_object(m, *p)
