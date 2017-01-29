@@ -26,4 +26,6 @@ def directions(actual_pos, list_of_pos):
     for destination in list_of_pos:
         for dct in default_dict:
             return_dict[dct] = destination if default_dict[dct](actual_pos, destination) else return_dict[dct]
-    return return_dict
+    return {k: v for k, v in return_dict.items() if v}
+
+

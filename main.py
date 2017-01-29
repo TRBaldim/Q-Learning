@@ -23,6 +23,7 @@ print map
 
 for _ in range(10):
     pos = map.possible_move(*m.position)
+    m.learn(pos)
     print directions((m.position[0], m.position[1]), pos)
     p = pos[np.random.randint(0, len(pos))]
     print p

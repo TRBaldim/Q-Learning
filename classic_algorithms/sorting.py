@@ -5,5 +5,5 @@ def insert_sorted(elem, array):
         return array
     else:
         array.append(elem)
-r        return sorted(array, reverse=True)
+        return sorted(array, reverse=True)
 
