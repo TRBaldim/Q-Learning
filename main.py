@@ -13,7 +13,7 @@ map = Map(10, 5)
 
 m = Mouse()
 
-map.set_element(Wall(), 2, 3)
+[map.set_element(Wall(), np.random.randint(0, 9), np.random.randint(0, 5)) for _ in range(5)]
 map.set_element(Cheese(), 1, 3)
 map.set_element(m, 1, 3)
 map.set_element(Cheese(), 4, 3)
