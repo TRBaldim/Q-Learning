@@ -3,6 +3,26 @@ import sqlite3
 from default_object import Objects
 from reinforcement import directions
 
+class Cheese(Objects):
+
+    def set_hierarchy(self):
+        self.hierarchy_level = 1
+
+    def __str__(self):
+        return 'Q'
+
+    def __repr__(self):
+        return 'Q'
+
+    def interact(self, obj):
+        if isinstance(obj, Mouse):
+            obj.interact(self)
+            self.destroy()
+            return True
+        else:
+            return False
+
+
 class Reinforce:
     def __init__(self, obj):
         self.object_dict = {'Cat': self.reinforce_cat,
@@ -90,25 +110,41 @@ class Mouse(Objects):
 
     def interact(self, obj):
         if isinstance(obj, Cat):
+            self.learn()
             obj.interact(self)
             return True
         else:
             return False
-    def learn(self, obj_directions):
+
+    def learn(self, map):
         epsilon = 0.99
+
+        moves = map.possible_move(*self.position)
+        obj_directions = directions((self.position[0], self.position[1]), moves)
+
         reinforce = Reinforce(self)
         cursor = reinforce.conn.cursor()
-        obj_direct_list = directions((self.position[0], self.position[1]), obj_directions).items()
+        obj_direct_list = obj_directions.items()
         if epsilon > np.random.random():
             choice = obj_direct_list[np.random.randint(0, len(obj_direct_list))]
-            query_list = cursor.execute('''SELECT * FROM ''' +
-                                        self.__class__.__name__ +
-                                        '''WHERE direction = '%s' ''' % choice[0])
+            q = 'SELECT * FROM ' + \
+                self.__class__.__name__ + \
+                ' WHERE direction = \"' + \
+                choice[0] + '\";'
+            query_list = cursor.execute(q)
             elems = query_list.fetchall()[0]
-            # todo: Need to get the return of reinforce from object to make the calculus sum_of_return / times
-            cursor.execute('''UPDATE ''' +
-                           self.__class__.__name__ +
-                           ''' SET (direction, idx, times_executed) = ('%s', %f, %f)''' % (choice[0], ))
+
+            reinforce_val = reinforce.reinforce_mouse(map.get_object(*obj_directions[str(elems[0])]))
+            # TODO: Check why the update of idx is not taking the division it keeps the same number.
+            q = 'UPDATE ' +\
+                self.__class__.__name__ +\
+                ' SET direction = \"' + str(elems[0]) + \
+                '\", idx = ' + str(float(float(elems[1]) + reinforce_val)/float(int(elems[2]) + 1)) + \
+                ', times_executed = ' + str(int(elems[2]) + 1) + \
+                ' WHERE direction = \"' + str(elems[0]) + '\";'
+
+            print q
+            cursor.execute(q)
         else:
             l_ob = cursor.execute('''SELECT * FROM ''' +
                                   self.__class__.__name__ +
@@ -120,6 +156,8 @@ class Mouse(Objects):
                 except:
                     pass
         print choice
+        reinforce.conn.commit()
+
     def choose_action(self, map):
         possible_moves = map.possible_move(*self.position)
         my_directions = directions((self.position[0], self.position[1]), possible_moves)
