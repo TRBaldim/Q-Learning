@@ -110,14 +110,15 @@ class Mouse(Objects):
 
     def interact(self, obj):
         if isinstance(obj, Cat):
-            self.learn()
+            #self.learn()
             obj.interact(self)
             return True
         else:
             return False
 
     def learn(self, map):
-        epsilon = 0.99
+        epsilon = 0.85
+        move_choice = None
 
         moves = map.possible_move(*self.position)
         obj_directions = directions((self.position[0], self.position[1]), moves)
@@ -127,6 +128,7 @@ class Mouse(Objects):
         obj_direct_list = obj_directions.items()
         if epsilon > np.random.random():
             choice = obj_direct_list[np.random.randint(0, len(obj_direct_list))]
+            move_choice = obj_directions[choice[0]]
             q = 'SELECT * FROM ' + \
                 self.__class__.__name__ + \
                 ' WHERE direction = \"' + \
@@ -143,20 +145,38 @@ class Mouse(Objects):
                 ', times_executed = ' + str(int(elems[2]) + 1) + \
                 ' WHERE direction = \"' + str(elems[0]) + '\";'
 
-            print q
             cursor.execute(q)
         else:
-            l_ob = cursor.execute('''SELECT * FROM ''' +
-                                  self.__class__.__name__ +
-                                  ''' ORDER BY index DESC''')
+            q = 'SELECT * FROM ' + self.__class__.__name__ + ' ORDER BY idx DESC;'
+
+            l_ob = cursor.execute(q)
+            direction = None
             for row in l_ob.fetchall():
                 try:
-                    choice = obj_directions[str(row[0])]
+                    direction = str(row[0])
+                    move_choice = obj_directions[direction]
                     break
                 except:
                     pass
-        print choice
+            q = 'SELECT * FROM ' + \
+                self.__class__.__name__ + \
+                ' WHERE direction = \"' + \
+                direction + '\";'
+            query_list = cursor.execute(q)
+            elems = query_list.fetchall()[0]
+
+            reinforce_val = reinforce.reinforce_mouse(map.get_object(*obj_directions[str(elems[0])]))
+
+            q = 'UPDATE ' + \
+                self.__class__.__name__ + \
+                ' SET direction = \"' + str(elems[0]) + \
+                '\", idx = ' + str(float(float(elems[1]) + reinforce_val) / float(int(elems[2]) + 1)) + \
+                ', times_executed = ' + str(int(elems[2]) + 1) + \
+                ' WHERE direction = \"' + str(elems[0]) + '\";'
+            cursor.execute(q)
+        #map.move_object(self, *move_choice)
         reinforce.conn.commit()
+        return move_choice
 
     def choose_action(self, map):
         possible_moves = map.possible_move(*self.position)

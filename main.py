@@ -23,11 +23,11 @@ print map
 
 for _ in range(10):
     pos = map.possible_move(*m.position)
-    m.learn(map)
-    print directions((m.position[0], m.position[1]), pos)
-    p = pos[np.random.randint(0, len(pos))]
-    print p
+    p = m.learn(map)
+    #print directions((m.position[0], m.position[1]), pos)
+    #p = pos[np.random.randint(0, len(pos))]
+    #print p
     map.move_object(m, *p)
     print map
-
+# TODO: Build a new map to teach the mouse to find the cheese
 print map
