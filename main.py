@@ -9,19 +9,52 @@ obj = Objects()
 b_obj = Objects()
 obj.put_stack(b_obj)
 
-map = Map(10, 5)
+map = Map(10, 6)
 
 m = Mouse()
 
-[map.set_element(Wall(), np.random.randint(0, 9), np.random.randint(0, 5)) for _ in range(5)]
-map.set_element(Cheese(), 1, 3)
-map.set_element(m, 1, 3)
-map.set_element(Cheese(), 4, 3)
-map.set_element(Cat(), 0, 4)
+#[map.set_element(Wall(), np.random.randint(0, 9), np.random.randint(0, 5)) for _ in range(5)]
+map.set_element(Cheese(), 1, 0)
+map.set_element(m, 9, 5)
+map.set_element(Wall(), 9, 4)
+map.set_element(Wall(), 8, 4)
+map.set_element(Wall(), 7, 4)
+map.set_element(Wall(), 5, 4)
+map.set_element(Wall(), 4, 4)
+map.set_element(Wall(), 3, 4)
+map.set_element(Wall(), 2, 4)
+map.set_element(Wall(), 1, 4)
+map.set_element(Wall(), 0, 4)
+map.set_element(Wall(), 5, 5)
+map.set_element(Wall(), 5, 3)
+map.set_element(Wall(), 5, 2)
+map.set_element(Wall(), 6, 2)
+map.set_element(Wall(), 7, 2)
+map.set_element(Wall(), 9, 3)
+map.set_element(Wall(), 9, 2)
+map.set_element(Wall(), 9, 1)
+map.set_element(Wall(), 9, 0)
+map.set_element(Wall(), 8, 0)
+map.set_element(Wall(), 7, 0)
+map.set_element(Wall(), 6, 0)
+map.set_element(Wall(), 5, 0)
+map.set_element(Wall(), 4, 0)
+map.set_element(Wall(), 3, 0)
+map.set_element(Wall(), 3, 1)
+map.set_element(Wall(), 3, 2)
+map.set_element(Wall(), 0, 0)
+map.set_element(Wall(), 0, 1)
+map.set_element(Wall(), 0, 2)
+map.set_element(Wall(), 0, 3)
+map.set_element(Wall(), 2, 0)
+map.set_element(Wall(), 2, 1)
+map.set_element(Wall(), 2, 2)
+#map.set_element(Cheese(), 4, 3)
+#map.set_element(Cat(), 0, 4)
 
 print map
 
-for _ in range(10):
+for _ in range(1000):
     pos = map.possible_move(*m.position)
     p = m.learn(map)
     #print directions((m.position[0], m.position[1]), pos)
@@ -29,5 +62,4 @@ for _ in range(10):
     #print p
     map.move_object(m, *p)
     print map
-# TODO: Build a new map to teach the mouse to find the cheese
-print map
+# TODO: Build a Labirinth to teach the mouse to solve

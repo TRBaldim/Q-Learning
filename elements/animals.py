@@ -43,7 +43,7 @@ class Reinforce:
         elif isinstance(obj_return, Objects):
             return 0
         else:
-            return -10
+            return 1
 
     @staticmethod
     def reinforce_mouse(obj_return):
@@ -117,7 +117,7 @@ class Mouse(Objects):
             return False
 
     def learn(self, map):
-        epsilon = 0.85
+        epsilon = 0.90
         move_choice = None
 
         moves = map.possible_move(*self.position)
@@ -137,7 +137,6 @@ class Mouse(Objects):
             elems = query_list.fetchall()[0]
 
             reinforce_val = reinforce.reinforce_mouse(map.get_object(*obj_directions[str(elems[0])]))
-            # TODO: Check why the update of idx is not taking the division it keeps the same number.
             q = 'UPDATE ' +\
                 self.__class__.__name__ +\
                 ' SET direction = \"' + str(elems[0]) + \
